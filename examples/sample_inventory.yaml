@@ -1,0 +1,61 @@
+# Sample asset inventory used by `python audit.py`.
+#
+# This models a small environment similar in spirit to the Network Security
+# Lab project: an edge firewall gateway, a segmented network, two hosts
+# (one healthy, one deliberately mis-configured to demonstrate findings),
+# and two IAM policies (one over-permissive, one scoped).
+
+assets:
+  - id: fw-gw-01
+    type: firewall_gateway
+    exposure: internet
+    nftables_ruleset: examples/sample_nftables_ruleset.conf
+    mfa_enabled: true
+    logging_forwarded: true
+
+  - id: corp-network
+    type: network
+    zones: ["vlan-prod", "vlan-mgmt", "vlan-guest"]
+    inter_zone_rules:
+      - "vlan-mgmt -> vlan-prod: tcp/22,443 only"
+      - "vlan-prod -> vlan-mgmt: deny"
+
+  - id: app-server-01
+    type: host
+    exposure: internal_trusted
+    ip: 127.0.0.1
+    scan_live: false
+    open_ports: [22, 443]
+    remote_access_protocol: ssh
+    mfa_enabled: true
+    logging_forwarded: true
+    patch_status:
+      current_version: "3.4.1"
+      latest_version: "3.4.1"
+      days_since_patch_available: 0
+      sla_days: 30
+
+  - id: legacy-host-02
+    type: host
+    exposure: internal_untrusted
+    ip: 127.0.0.1
+    scan_live: false
+    open_ports: [23, 3389, 445]
+    remote_access_protocol: rdp
+    mfa_enabled: false
+    logging_forwarded: false
+    patch_status:
+      current_version: "2.1.0"
+      latest_version: "2.6.0"
+      days_since_patch_available: 92
+      sla_days: 30
+
+  - id: iam-role-deploy
+    type: iam_policy
+    policy_actions: ["*"]
+    policy_resources: ["*"]
+
+  - id: iam-role-readonly
+    type: iam_policy
+    policy_actions: ["s3:GetObject", "logs:Describe*"]
+    policy_resources: ["arn:aws:s3:::reports-bucket/*"]
