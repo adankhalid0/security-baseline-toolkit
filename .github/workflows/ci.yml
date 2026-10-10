@@ -22,8 +22,14 @@ jobs:
       - name: Unit tests
         run: pytest -q
 
-      - name: Run the audit end to end
-        run: python audit.py
+      - name: Audit the sample inventory
+        # The sample inventory is deliberately misconfigured, so the audit must
+        # find Critical/High issues and exit with code 1, and write a report.
+        run: |
+          code=0
+          python audit.py || code=$?
+          test "$code" -eq 1
+          test -s report.md
 
   terraform:
     runs-on: ubuntu-latest
