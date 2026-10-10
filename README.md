@@ -1,5 +1,7 @@
 # Security Baseline & Risk Assessment Toolkit
 
+[![CI](https://github.com/adankhalid0/security-baseline-toolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/adankhalid0/security-baseline-toolkit/actions/workflows/ci.yml)
+
 A small, working toolkit that automates the loop most security teams do
 manually: **define a baseline → check assets against it → score the gaps as
 risk → report, with a suggested compensating control for each finding.**
@@ -75,6 +77,22 @@ Run the tests:
 ```bash
 pytest -q
 ```
+
+## Results
+
+Screenshots are from a real run on Kali Linux.
+
+**Audit.** The sample inventory is evaluated against the baseline: 10 controls pass and 6 findings are raised. The report is written to `report.md`.
+
+![Output of python audit.py](docs/images/01-audit-run.png)
+
+**Tests.** The 7 unit tests for the risk engine and the checks pass.
+
+![pytest output](docs/images/02-tests.png)
+
+**Report.** The summary counts the findings by risk level (2 critical, 4 high). Each finding lists its risk score (likelihood x impact), the control, the asset, the NIST CSF and ISO 27001 mapping, the evidence, and a compensating control. Five of the six findings are on the deliberately misconfigured `legacy-host-02`, and the sixth is the wildcard IAM policy.
+
+![Start of the generated report](docs/images/03-report-findings.png)
 
 ## Project layout
 
