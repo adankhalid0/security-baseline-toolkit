@@ -44,8 +44,10 @@ demonstration of a middle path:
 ## Quick start
 
 ```bash
-git clone <this-repo>
+git clone https://github.com/adankhalid0/security-baseline-toolkit.git
 cd security-baseline-toolkit
+python3 -m venv .venv
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 
 # Run the audit against the sample inventory
@@ -140,7 +142,7 @@ Full detail, including the risk scoring model, is in
 `scanner/network_scanner.py` does an actual TCP connect-scan
 (`socket.connect_ex`) and a real regex-based parse of an nftables ruleset —
 the same technique used in my
-[Network Security Lab](https://github.com/adankhalid0) project, where I set
+[Network Security Lab](https://github.com/adankhalid0/network-security-lab) project, where I set
 up a segmented Docker network behind an nftables gateway. By default the
 sample inventory uses recorded port data (so the demo is reproducible
 without a live target), but `scan_live: true` + an `ip` in the inventory
@@ -153,9 +155,9 @@ and management subnets, a management security group scoped to a single admin
 CIDR (never `0.0.0.0/0`), and VPC Flow Logs shipped to CloudWatch — so that
 AC-02, NS-01, and LOG-01 are enforced by the infrastructure definition itself
 rather than caught later by an audit. It hasn't been applied against a live
-AWS account (no state file or credentials are part of this repo); run
-`terraform init && terraform validate` and review the plan before ever
-applying it anywhere.
+AWS account (no state file or credentials are part of this repo); CI runs
+`terraform fmt -check`, `terraform init -backend=false` and `terraform validate`
+on every push. Review the plan before ever applying it anywhere.
 
 ## Limitations / honest scope
 
