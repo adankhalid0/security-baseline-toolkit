@@ -1,6 +1,6 @@
 # Security Baseline & Risk Assessment Toolkit
 
-[![CI](https://github.com/adankhalid0/security-baseline-toolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/adankhalid0/security-baseline-toolkit/actions/workflows/ci.yml)
+[![CI](https://github.com/adankhalid0/security-baseline-toolkit/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/adankhalid0/security-baseline-toolkit/actions/workflows/ci.yml)
 
 A small, working toolkit that automates the loop most security teams do
 manually: **define a baseline → check assets against it → score the gaps as
